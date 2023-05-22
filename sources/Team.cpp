@@ -32,6 +32,7 @@ void Team::add(Character *teamate){
 }
 
 void Team::attack(Team *other){
+  //if leader is alive
   if(other->leader->isAlive()){
 
   }
