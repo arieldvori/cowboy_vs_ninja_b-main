@@ -6,8 +6,8 @@
 namespace ariel {};
 
 class Team {
-  vector<Character *> team;
   Character *leader;
+  vector<Character *> team;
 
 public:
   Team(const Team& other);

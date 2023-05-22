@@ -9,7 +9,14 @@ void Ninja::move(Character *enemy) {
 }
 
 void Ninja::slash(Character *enemy) {
-    if((this->isAlive)&&((this->getLocation().distance(enemy->getLocation()))<1)){
+    if((this->isAlive())&&((this->getLocation().distance(enemy->getLocation()))<1)){
         enemy->hit(40);
+    }
+}
+
+void Ninja::print(){
+    if(isAlive()){
+        cout << "Type: N, ";
+        this->print();
     }
 }

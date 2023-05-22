@@ -1,6 +1,7 @@
 #include "Team.hpp"
 #include "Character.hpp"
 #include <vector>
+#include <float.h>
 
 Team::Team(const Team &other) : leader(other.leader){}
 
@@ -8,7 +9,7 @@ Team::Team(Character *leader) : leader(leader){
   team.push_back(leader); 
 }
 
-Team::Team(Team &&other)noexcept{
+Team::Team(Team &&other) noexcept{
   leader = other.leader;
   team = other.team;
 }
@@ -26,12 +27,24 @@ Team &Team::operator=( Team &&other) noexcept{
 }
 
 void Team::add(Character *teamate){
-  if (team.size() == 10)
-    return;
-  team.push_back(teamate);
+  if (team.size() < 10)
+    team.push_back(teamate);
 }
 
-void Team::attack(Team *other){}
+void Team::attack(Team *other){
+  if(other->leader->isAlive()){
+
+  }
+  else{
+    double closest = DBL_MAX;
+    for(int i=1;i<10;i++){
+      if(team[i]->isAlive()){
+        if((team[i]->getLocation().distance(leader->getLocation()))<DBL_MAX)
+          other->leader=team[i];
+      }
+    }
+  }
+}
 
 int Team::stillAlive(){
   return 0;
