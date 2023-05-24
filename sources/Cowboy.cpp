@@ -16,7 +16,7 @@ void Cowboy::shoot(Character *enemy){
     if (enemy == this)
         throw runtime_error("cant hit itself");
         
-    if((this->isAlive())&&(this->hasboolets())){
+    if((this->hasboolets())){
         enemy->hit(10);
         bullets--;
     }
@@ -44,9 +44,9 @@ string Cowboy::print()const{
 void Cowboy::attack(Character *enemy){
     if(isAlive()){
         if(hasboolets())
-        shoot(enemy);
-    else
-        reload();
+            shoot(enemy);
+        else
+            reload();
     }
     
 }

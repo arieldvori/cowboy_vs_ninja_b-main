@@ -18,15 +18,17 @@ void SmartTeam::attack(Team *other) {
     throw runtime_error("dead Team can't attack");
     
   setLeader(findAlive(this));
-  Character *victim = findAlive(other);
+  Character *victim = this->findvictim(other);
   for( Character *teamate : *(this->getTeam())){
-    //if they are all dead
-    if(other->stillAlive()==false){
+    if(other->stillAlive() == 0)
       return;
-    }
+    //if they are all dead
     if(victim->isAlive())
       teamate->attack(victim);
-    victim = findAlive(other);
+    else{
+      victim = this->findvictim(other);
+      teamate->attack(victim);
+    }
   }
 }
 

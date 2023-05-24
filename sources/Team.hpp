@@ -17,6 +17,7 @@ public:
   Team(Character *leader);
   Team(Team&& other)noexcept;
   Character *findAlive(Team *other);
+  Character *findvictim(Team *other);
   Team& operator=(const Team& other);
   Team& operator=( Team&& other)noexcept;
   void add(Character *teamate);

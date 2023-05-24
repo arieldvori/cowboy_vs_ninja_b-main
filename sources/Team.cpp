@@ -20,7 +20,7 @@ Team::Team(Team &&other) noexcept{
 }
 
 Character *Team::findAlive(Team *other) {
-  if (other->leader->isAlive()==false){
+  if(other->leader->isAlive()==false){
     double closest = DBL_MAX;
     Character *result = NULL;
     for (Character *teamate : other->team)
@@ -33,6 +33,18 @@ Character *Team::findAlive(Team *other) {
   return other->leader;
 }
 
+Character *Team::findvictim(Team *other) {
+    double closest = DBL_MAX;
+    Character *result = NULL;
+    for (Character *teamate : other->team)
+      if (teamate->isAlive() && this->leader->distance(teamate) < closest) {
+        closest = this->leader->distance(teamate);
+        result = teamate;
+      }
+    return result;
+}
+
+
 Team &Team::operator=(const Team &other){
   throw runtime_error("cant be on more than one team");
 }
@@ -44,7 +56,7 @@ Team &Team::operator=( Team &&other) noexcept{
 }
 
 void Team::add(Character *teamate){
-  if (this->team.size() == 10)
+  if (team.size() == 10)
       throw runtime_error("maximum size of group is 10");
   if (teamate->IsActive())
       throw runtime_error("a player can be member of one team only");
@@ -57,31 +69,41 @@ void Team::add(Character *teamate){
 }
 
 void Team::attack(Team *other){
-  if (other == nullptr)
+  if(other == nullptr)
       throw invalid_argument("can't attack nothing");
 
-  if (other == this)
+  if(other == this)
       throw runtime_error("cant attack yourself");
 
-  if (this->stillAlive() == false)
+  if(this->stillAlive() == 0)
       throw runtime_error("dead Team can't attack");
 
-  if (other->stillAlive() == false)
+  if(other->stillAlive() == 0)
       throw runtime_error("dead Team can't be attacked");
   this->leader = findAlive(this);
-  Character *victim = findAlive(other);
-  for( Character *teamate : team){
+  Character *victim = this->findvictim(other);
+  for(Character *teamate : team){
+    if(other->stillAlive() == 0)
+      return;
     if(teamate->IsCowboy()){
       if(victim->isAlive())
         teamate->attack(victim);
-      victim = findAlive(other);
+      else{
+        victim = this->findvictim(other);
+        teamate->attack(victim);
+      }
     }
   }
   for( Character *teamate : team){
+    if(other->stillAlive() == 0)
+      return;
     if(!teamate->IsCowboy()){
       if(victim->isAlive())
         teamate->attack(victim);
-      victim = findAlive(other);
+      else{
+        victim = this->findvictim(other);
+        teamate->attack(victim);
+      }
     }
   }
 }

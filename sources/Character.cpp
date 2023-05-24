@@ -15,7 +15,7 @@ double Character::distance(const Character *other) const{
 }
 void Character::hit(int damage) {
     if(damage<0)
-        throw invalid_argument("cant add hp when damage is neg");
+        throw invalid_argument("cant reduse hp when damage is neg");
     _hit_points-=damage;
 }
 
