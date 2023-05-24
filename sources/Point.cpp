@@ -4,16 +4,26 @@ using namespace std;
 
 Point::Point(double x, double y) : xval(x), yval(y) {}
 
-double Point::distance(const Point &other) { 
+double Point::getxval(){
+  return this->xval;
+}
+double Point::getyval(){
+  return this->yval;
+}
+
+double Point::distance(const Point &other) const{ 
   //dis=sqrt{(x1-x2)^2+(y1-y2)^2}
   double xdis = (this->xval-other.xval)*(this->xval-other.xval);
   double ydis = (this->yval-other.yval)*(this->yval-other.yval);
   return sqrt(xdis+ydis);
 }
-void Point::print() {
-  cout << "(" << this->xval << "," << this->yval << ")" << endl; 
+string Point::print() const{
+  string str;
+  str=  "(" + to_string(this->xval) + "," + to_string(yval) + ")"; 
+  return str;
 }
-Point Point::moveTowards(Point src, Point dest, double distance) {
+
+const Point Point::moveTowards(const Point &src,const Point &dest, double distance) {
   double src_dest_dis= src.distance(dest);
   if(distance==0)
     return src;

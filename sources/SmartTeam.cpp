@@ -2,40 +2,37 @@
 #include "Character.hpp"
 #include <vector>
 
-SmartTeam::SmartTeam(const SmartTeam &other)
-  : Team(other), leader(other.leader){}
+SmartTeam::SmartTeam(Character *leader) : Team(leader){}
 
-SmartTeam::SmartTeam(Character *leader) : Team(leader), leader(leader) {
-  team.push_back(leader);
+void SmartTeam::attack(Team *other) {
+  if(other == this)
+    throw runtime_error("cant attack itself");
+
+  if(other == nullptr)
+    throw invalid_argument("can't attack nothing");
+
+  if(other->stillAlive() == 0)
+    throw runtime_error("dead Team can't be attacked");
+
+  if(this->stillAlive() == 0)
+    throw runtime_error("dead Team can't attack");
+    
+  setLeader(findAlive(this));
+  Character *victim = findAlive(other);
+  for( Character *teamate : *(this->getTeam())){
+    //if they are all dead
+    if(other->stillAlive()==false){
+      return;
+    }
+    if(victim->isAlive())
+      teamate->attack(victim);
+    victim = findAlive(other);
+  }
 }
 
-SmartTeam::SmartTeam(SmartTeam &&other) noexcept : Team(other){
-  team = other.team;
-  leader = other.leader;
+void SmartTeam::print() const{
+  for(Character *teamate: *(this->getTeam())){
+      teamate->print();
+      cout << endl;
+  }
 }
-
-SmartTeam &SmartTeam::operator=(const SmartTeam &other) {
-  team = other.team;
-  leader = other.leader;
-  return *this;
-}
-
-SmartTeam &SmartTeam::operator=(SmartTeam &&other) noexcept {
-  team = other.team;
-  leader = other.leader;
-  return *this;
-}
-
-void SmartTeam::add(Character *member) {
-  if (team.size() == 10)
-    return;
-  team.push_back(member);
-}
-
-void SmartTeam::attack(Team *other) {}
-
-int SmartTeam::stillAlive() { return 0; }
-
-void SmartTeam::print() {}
-
-SmartTeam::~SmartTeam() {}

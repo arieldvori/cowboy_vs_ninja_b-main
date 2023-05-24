@@ -2,38 +2,35 @@
 
 using namespace std;
 
-Character::Character(string name, const Point &location, int hit_points)
-    : _name(name), _location(location), _hit_points(hit_points) {}
+Character::Character(string name, const Point &location, int hit_points, bool is_cowboy)
+    : _name(name), _location(location), _hit_points(hit_points), _is_cowboy(is_cowboy) {}
 
-bool Character::isAlive() { 
+bool Character::isAlive() const{ 
     if(_hit_points>0)
         return true;
     return false; 
 }
-double Character::distance(Character &other) {
-    return _location.distance(other._location); 
+double Character::distance(const Character *other) const{
+    return this->_location.distance(other->_location); 
 }
 void Character::hit(int damage) {
+    if(damage<0)
+        throw invalid_argument("cant add hp when damage is neg");
     _hit_points-=damage;
 }
 
-string Character::getName() {
+string Character::getName() const{
     return _name; 
 }
-Point Character::getLocation() {
+Point Character::getLocation() const{
     return _location; 
 }
-int Character::gethitpoints() {
+int Character::gethitpoints() const{
     return _hit_points; 
 }
-void Character::print() {
-    cout << "the character name is: " << _name ;
-    if(isAlive)
-        cout << ", it got: " << _hit_points << "hit points "; 
-    cout << "and and location is: ";
-    _location.print();
-    cout << endl; 
-}
-void Character::setLocation(Point point){
+void Character::setLocation(const Point & point){
     _location=point;
 }
+bool Character::IsCowboy() const{return _is_cowboy;}
+bool Character::IsActive() const{return _is_active;}
+void Character::setActive(){this->_is_active=true;}

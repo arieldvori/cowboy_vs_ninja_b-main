@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "iterator": "cpp",
+        "stdexcept": "cpp",
+        "iostream": "cpp"
+    }
+}
